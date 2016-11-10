@@ -43,6 +43,12 @@ u'1.2.2'
 
 ###Get
 ```
+>>> c.namespace('testns')
+{u'properties': None}
+```
+
+###Create
+```
 >>> c.namespace_create('testns')
 True
 ```
