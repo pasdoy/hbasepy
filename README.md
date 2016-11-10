@@ -131,5 +131,5 @@ TBD
 1:1 {'yo:lll': '1111s', 'yo:2': '22222'}
 1:2 {'yo:qqq': 'wwrt'}
 ```
-##Missing features?
+##Missing feature?
 The lib doesn't cover all endpoint options (end_row, timestamp). You can always open a pr with new ones. If you have more info on the `/multiget` endpoint please open an issue. I found it in a mailing list without any spec like column filter, timestamp filter, etc. 
