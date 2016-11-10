@@ -1,4 +1,4 @@
-# hbase-py
+# hbasepy
 A simple hbase REST client. 
 
 ##Features
@@ -112,19 +112,19 @@ True
 
 ##Scan
 ```
->>> for k, v in c.scan_prefix('test'):
+>>> for k, v in c.scan('test'):
 ...   print k
 ...
 1:1
 1:2
 
->>> for k, v in c.scan_prefix('test', prefix='1:'):
+>>> for k, v in c.scan('test', prefix='1:'):
 ...   print k
 ...
 1:1
 1:2
 
->>> for k, v in c.scan_prefix('test', prefix='1:', columns=['yo:2']):
+>>> for k, v in c.scan('test', prefix='1:', columns=['yo:2']):
 ...   print k
 ...
 1:1
