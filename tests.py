@@ -1,7 +1,7 @@
 import hbasepy
 
 def test_flow():
-	c = hbasepy.Client('http:////10.100.1.212:8070')
+	c = hbasepy.Client('http://10.100.1.212:8070')
 	c.table_delete('test')
 
 	r = c.table_create('test', cf=[{'name': 'yo', 'maxVersions': 1}])
