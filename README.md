@@ -1,6 +1,19 @@
 # hbase-py
+A simple hbase REST client. 
+
+##Features
+- Cluster version/status
+- Namespace CRUD
+- Table CRUD
+- Bulk inserts
+- Prefix scan
+- Multiget
+- Scan (TBD)
 
 ##Install
+```
+pip install hbasepy
+```
 
 ##Usage
 ```
@@ -134,3 +147,8 @@ TBD
 
 ##Missing feature?
 The lib doesn't cover all endpoint options (end_row, timestamp). You can always open a pr with new ones. If you have more info on the `/multiget` endpoint please open an issue. I found it in a mailing list without any spec like column filter, timestamp filter, etc. 
+
+##Run tests
+```
+$ py.test tests.py
+```
