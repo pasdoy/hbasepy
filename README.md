@@ -6,9 +6,9 @@ A simple hbase REST client.
 - Namespace CRUD
 - Table CRUD
 - Bulk inserts
+- Scan
 - Prefix scan
 - Multiget
-- Scan (TBD)
 
 ##Install
 ```
@@ -110,15 +110,21 @@ c.put('test', [{'key': '1:1', 'values': {'yo:lll': '1111s', 'yo:2': '22222'}}, {
 True
 ```
 
-##Scan prefix
+##Scan
 ```
->>> for k, v in c.scan_prefix('test', '1:'):
+>>> for k, v in c.scan_prefix('test'):
 ...   print k
 ...
 1:1
 1:2
 
->>> for k, v in c.scan_prefix('test', '1:', columns=['yo:2']):
+>>> for k, v in c.scan_prefix('test', prefix='1:'):
+...   print k
+...
+1:1
+1:2
+
+>>> for k, v in c.scan_prefix('test', prefix='1:', columns=['yo:2']):
 ...   print k
 ...
 1:1
@@ -141,9 +147,6 @@ True
 1:1 {'yo:lll': '1111s', 'yo:2': '22222'}
 1:2 {'yo:qqq': 'wwrt'}
 ```
-
-##Scan (without prefix)
-TBD
 
 ##Missing feature?
 The lib doesn't cover all endpoint options (end_row, timestamp). You can always open a pr with new ones. If you have more info on the `/multiget` endpoint please open an issue. I found it in a mailing list without any spec like column filter, timestamp filter, etc. 

@@ -11,7 +11,7 @@ def test_flow():
 	assert 'ColumnSchema' in r, 'get table schema failed'
 
 	keys = ['1:1', '2:1']
-	r = c.put('test', [{'key': '1:1', 'values': {'yo:lll': '1111s', 'yo:2': '22222'}}, {'key': '1:2', 'values': {'yo:qqq': 'wwrt'}}])
+	r = c.put('test', [{'key': '1:1', 'values': {'yo:lll': '1111s', 'yo:2': '22222'}}, {'key': '1:2', 'values': {'yo:qqq': 'wwrt'}}, {'key': '2:1', 'values': {'yo:col': 'test'}}])
 	assert r, 'Insert data failed'
 
 	k, v = c.get('test', '1:1', cf='yo:2')
@@ -21,14 +21,17 @@ def test_flow():
 	k, v = c.get('test', '1:2')
 	assert k == '1:2', 'Get row failed'
 
-	for k, v in c.scan_prefix('test', '1:', columns=['yo:2']):
+	for k, v in c.scan('test', prefix='1:', columns=['yo:2']):
 		assert k == '1:1', 'Get row failed'
 		assert len(v) == 1, 'Select specific column failed'
 
-	rows = list(c.scan_prefix('test', '1:', columns=['yo']))
+	rows = list(c.scan('test', prefix='1:', columns=['yo']))
 	assert len(rows) == 2, 'Not all row scanned'
 
-	rows = list(c.get_many('test', ['1:1', '1:2']))
+	rows = list(c.scan('test'))
+	assert len(rows) == 3, 'Not all row scanned'
+
+	rows = list(c.get_many('test', ['1:1', '2:1']))
 	assert len(rows) == 2, 'Multiget failed'
 
 	r = c.table_delete('test')

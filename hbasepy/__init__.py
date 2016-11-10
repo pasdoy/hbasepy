@@ -62,7 +62,7 @@ class Client:
 			return json.loads(r.text)
 
 	def table_create(self, name, cf=None):
-		if cf == None or len(cf) == 0:
+		if not cf or len(cf) == 0:
 			raise Exception("Need at least one column family")
 
 		data = {'name': name, 'ColumnSchema': cf}
@@ -71,7 +71,7 @@ class Client:
 		return r.status_code/100 == 2
 
 	def table_update(self, name, cf=None):
-		if len(cf) == 0:
+		if not cf or len(cf) == 0:
 			raise Exception("Need at least one column family")
 
 		data = {'name': name, 'ColumnSchema': cf}
@@ -93,15 +93,30 @@ class Client:
 	        result.update(dictionary)
 	    return result
 
-	def scan_prefix(self, table, prefix, columns=None, batch_size=None):
-		encoded_prefix = base64.b64encode(prefix)
+	def scan(self, table, prefix=None, columns=None, batch_size=None, start_row=None, end_row=None, start_time=None, end_time=None):
+		data = {'batch': 1000}
 
-		data = {'batch': 1000, 'startRow': encoded_prefix, 'filter': '{"type": "PrefixFilter","value": "%s"}' % encoded_prefix}
+		if prefix:
+			encoded_prefix = base64.b64encode(prefix)
+			data['startRow'] = encoded_prefix
+			data['filter'] = '{"type": "PrefixFilter","value": "%s"}' % encoded_prefix
 
-		if columns != None:
+		if start_row:
+			data['startRow'] = start_row
+
+		if end_row:
+			data['endRow'] = end_row
+
+		if start_time:
+			data['startTime'] = start_time
+
+		if end_time:
+			data['endTime'] = end_time
+			
+		if columns:
 			data['column'] = [base64.b64encode(c) for c in columns]
 
-		if batch_size != None:
+		if batch_size:
 			data['batch'] = batch_size
 
 		r = self.session.put(self.url + '/%s/scanner/' % table, headers=self.headers, json=data)
@@ -159,13 +174,13 @@ class Client:
 	def get(self, table, key, cf=None, ts=None, versions=None):
 		url = self.url + '/%s/%s' % (table, key)
 
-		if cf != None:
+		if cf:
 			url += '/' + cf
 
-		if ts != None:
+		if ts:
 			url += '/' + ts
 
-		if versions != None:
+		if versions:
 			url += '?v=%s' % versions
 
 		r = self.session.get(url, headers=self.headers)
