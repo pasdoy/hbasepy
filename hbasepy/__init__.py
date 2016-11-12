@@ -93,7 +93,7 @@ class Client:
 	        result.update(dictionary)
 	    return result
 
-	def scan(self, table, prefix=None, columns=None, batch_size=None, start_row=None, end_row=None, start_time=None, end_time=None):
+	def scan(self, table, prefix=None, columns=None, batch_size=None, start_row=None, end_row=None, start_time=None, end_time=None, timestamp=None):
 		data = {'batch': 1000}
 
 		if prefix:
@@ -112,7 +112,7 @@ class Client:
 
 		if end_time:
 			data['endTime'] = end_time
-			
+
 		if columns:
 			data['column'] = [base64.b64encode(c) for c in columns]
 
@@ -138,13 +138,7 @@ class Client:
 			total_row = len(doc['Row'])
 			for i in range(total_row):
 				row = doc['Row'][i]
-
-				#row data
-				key = base64.b64decode(row['key'])
-				values = {}
-				for c in row['Cell']:
-					values[base64.b64decode(c['column'])] = base64.b64decode(c['$'])
-
+				key, values = self.decode_row(row, timestamp=timestamp)
 				full_row = {'key': key, 'values': values}
 
 				#first row of new set
@@ -171,7 +165,7 @@ class Client:
 		#print 'Delete'
 		r = self.session.delete(url)
 
-	def get(self, table, key, cf=None, ts=None, versions=None):
+	def get(self, table, key, cf=None, ts=None, versions=None, timestamp=None):
 		url = self.url + '/%s/%s' % (table, key)
 
 		if cf:
@@ -189,15 +183,9 @@ class Client:
 			return
 
 		row = json.loads(r.text)['Row'][0]
+		return self.decode_row(row, timestamp=timestamp)
 
-		key = base64.b64decode(row['key'])
-		values = {}
-		for c in row['Cell']:
-			values[base64.b64decode(c['column'])] = base64.b64decode(c['$'])
-
-		return key, values
-
-	def get_many(self, table, keys):
+	def get_many(self, table, keys, timestamp=None):
 		if len(keys) == 0:
 			return
 
@@ -212,13 +200,7 @@ class Client:
 
 		doc = json.loads(r.text)
 		for row in doc['Row']:
-			#row data
-			key = base64.b64decode(row['key'])
-			values = {}
-			for c in row['Cell']:
-				values[base64.b64decode(c['column'])] = base64.b64decode(c['$'])
-
-			yield key, values
+			yield self.decode_row(row, timestamp=timestamp)
 
 
 	def put(self, table, values):
@@ -237,3 +219,18 @@ class Client:
 
 		r = self.session.put(self.url + '/%s/1' % table, headers=self.headers, json=data)
 		return r.status_code/100 == 2
+
+	def decode_row(self, row, timestamp=None):
+		key = base64.b64decode(row['key'])
+		values = {}
+		for c in row['Cell']:
+			col = base64.b64decode(c['column'])
+			value = base64.b64decode(c['$'])
+			values[col] = value
+
+			if timestamp:
+				values[col] = (value, c['timestamp'])
+
+		return key, values
+
+		
