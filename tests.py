@@ -21,7 +21,7 @@ def test_flow():
 	k, v = c.get('test', '1:2')
 	assert k == '1:2', 'Get row failed'
 
-	k, v = c.get('test', '1:2', timestamp=True)
+	k, v = c.get('test', '1:2', include_timestamp=True)
 	print v
 	assert len(v.values()[0]) == 2, 'Failed to get row timestamp'
 
