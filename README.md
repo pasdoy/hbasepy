@@ -143,6 +143,9 @@ True
 
 >>> c.get('test', '1:1', cf='yo:2')
 ('1:1', {'yo:2': '22222'})
+
+>>> c.get('test', '1:2', timestamp=True)
+('1:2', {'yo:qqq': ('wwrt', 1478913898453)})
 ```
 
 ##Get many
