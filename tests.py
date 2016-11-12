@@ -22,7 +22,6 @@ def test_flow():
 	assert k == '1:2', 'Get row failed'
 
 	k, v = c.get('test', '1:2', include_timestamp=True)
-	print v
 	assert len(v.values()[0]) == 2, 'Failed to get row timestamp'
 
 	for k, v in c.scan('test', prefix='1:', columns=['yo:2']):

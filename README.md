@@ -150,7 +150,7 @@ True
 >>> c.get('test', '1:1', cf='yo:2')
 ('1:1', {'yo:2': '22222'})
 
->>> c.get('test', '1:2', timestamp=True)
+>>> c.get('test', '1:2', include_timestamp=True)
 ('1:2', {'yo:qqq': ('wwrt', 1478913898453)})
 ```
 
@@ -164,7 +164,7 @@ True
 ```
 
 ##Missing feature?
-The lib doesn't cover all endpoint options (end_row, timestamp). You can always open a pr with new ones. If you have more info on the `/multiget` endpoint please open an issue. I found it in a mailing list without any spec like column filter, timestamp filter, etc. 
+The lib doesn't cover all endpoint options. You can always open a pr with new ones. If you have more info on the `/multiget` endpoint please open an issue. I found it in a mailing list without any spec like column filter, timestamp filter, etc. 
 
 ##Run tests
 ```
