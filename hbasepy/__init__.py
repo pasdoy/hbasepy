@@ -24,6 +24,10 @@ class Client:
 		r = self.session.get(self.url + '/status/cluster', headers=self.headers)
 		return json.loads(r.text)
 
+	def info(self):
+		r = self.session.get(self.url + '/version', headers=self.headers)
+		return json.loads(r.text)
+
 	def namespaces(self):
 		r = self.session.get(self.url + '/namespaces', headers=self.headers)
 		return json.loads(r.text)['Namespace']

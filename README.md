@@ -34,6 +34,12 @@ u'1.2.2'
 [u'regions', u'DeadNodes', u'requests', u'LiveNodes', u'averageLoad']
 ```
 
+###Info
+```
+>>> c.info()
+{u'OS': u'Linux 4.4.19-29.55.amzn1.x86_64 amd64', u'JVM': u'Oracle Corporation 1.8.0_101-25.101-b13', u'REST': u'0.0.3', u'Jersey': u'1.9', u'Server': u'jetty/6.1.26'}
+```
+
 ##Namespace
 ###List
 ```
