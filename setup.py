@@ -9,6 +9,6 @@ setup(name='hbasepy',
       license='MIT',
       packages=['hbasepy'],
       install_requires=[
-          'requests==2.11.1',
+          'requests',
       ],
       zip_safe=False)
