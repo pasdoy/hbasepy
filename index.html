@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Hbasepy by pasdoy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Hbasepy</h1>
+      <h2 class="project-tagline">A simple hbase REST client.</h2>
+      <a href="https://github.com/pasdoy/hbasepy" class="btn">View on GitHub</a>
+      <a href="https://github.com/pasdoy/hbasepy/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/pasdoy/hbasepy/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="hbasepy" class="anchor" href="#hbasepy" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>hbasepy</h1>
+
+<p>A simple hbase REST client. </p>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>Cluster version/status</li>
+<li>Namespace CRUD</li>
+<li>Table CRUD</li>
+<li>Bulk inserts</li>
+<li>Scan</li>
+<li>Prefix scan</li>
+<li>Multiget</li>
+</ul>
+
+<h2>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install</h2>
+
+<pre><code>pip install hbasepy
+</code></pre>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<pre><code>&gt;&gt;&gt; import hbasepy
+&gt;&gt;&gt; c = hbasepy.Client('http://domain.com:8070')
+</code></pre>
+
+<h2>
+<a id="cluster" class="anchor" href="#cluster" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cluster</h2>
+
+<h3>
+<a id="versions" class="anchor" href="#versions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Versions</h3>
+
+<pre><code>&gt;&gt;&gt; c.version()
+u'1.2.2'
+</code></pre>
+
+<h3>
+<a id="status" class="anchor" href="#status" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Status</h3>
+
+<pre><code>&gt;&gt;&gt; c.status().keys()
+[u'regions', u'DeadNodes', u'requests', u'LiveNodes', u'averageLoad']
+</code></pre>
+
+<h3>
+<a id="info" class="anchor" href="#info" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Info</h3>
+
+<pre><code>&gt;&gt;&gt; c.info()
+{u'OS': u'Linux 4.4.19-29.55.amzn1.x86_64 amd64', u'JVM': u'Oracle Corporation 1.8.0_101-25.101-b13', u'REST': u'0.0.3', u'Jersey': u'1.9', u'Server': u'jetty/6.1.26'}
+</code></pre>
+
+<h2>
+<a id="namespace" class="anchor" href="#namespace" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Namespace</h2>
+
+<h3>
+<a id="list" class="anchor" href="#list" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>List</h3>
+
+<pre><code>&gt;&gt;&gt; c.namespaces()
+[u'default', u'hbase']
+</code></pre>
+
+<h3>
+<a id="get" class="anchor" href="#get" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Get</h3>
+
+<pre><code>&gt;&gt;&gt; c.namespace('testns')
+{u'properties': None}
+</code></pre>
+
+<h3>
+<a id="create" class="anchor" href="#create" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create</h3>
+
+<pre><code>&gt;&gt;&gt; c.namespace_create('testns')
+True
+</code></pre>
+
+<h3>
+<a id="tables" class="anchor" href="#tables" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tables</h3>
+
+<pre><code>&gt;&gt;&gt; c.namespace_tables('testns')
+[]
+</code></pre>
+
+<h3>
+<a id="alter" class="anchor" href="#alter" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Alter</h3>
+
+<pre><code>&gt;&gt;&gt; c.namespace_alter('testns')
+True
+</code></pre>
+
+<h3>
+<a id="delete" class="anchor" href="#delete" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Delete</h3>
+
+<pre><code>&gt;&gt;&gt; c.namespace_delete('testns')
+True
+</code></pre>
+
+<h2>
+<a id="table" class="anchor" href="#table" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Table</h2>
+
+<h3>
+<a id="list-1" class="anchor" href="#list-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>List</h3>
+
+<pre><code>&gt;&gt;&gt; c.tables()
+[u'test']
+</code></pre>
+
+<h3>
+<a id="get-1" class="anchor" href="#get-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Get</h3>
+
+<pre><code>&gt;&gt;&gt; c.table_schema('test')
+{u'ColumnSchema': [{u'BLOCKCACHE': u'true', u'name': u'col', u'VERSIONS': u'1', u'KEEP_DELETED_CELLS': u'FALSE', u'maxVersions': u'1', u'BLOCKSIZE': u'65536', u'MIN_VERSIONS': u'0', u'DATA_BLOCK_ENCODING': u'NONE', u'REPLICATION_SCOPE': u'0', u'TTL': u'2147483647', u'IN_MEMORY': u'false', u'BLOOMFILTER': u'ROW', u'COMPRESSION': u'NONE'}], u'name': u'test', u'IS_META': u'false'}
+</code></pre>
+
+<h3>
+<a id="create-1" class="anchor" href="#create-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create</h3>
+
+<pre><code>&gt;&gt;&gt; c.table_create('test', [{'name': 'col', 'maxVersions': 1}])
+True
+</code></pre>
+
+<h3>
+<a id="update" class="anchor" href="#update" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Update</h3>
+
+<p>Replace the table definition. You have to specify existing column you want to keep. If you don't they are dropped.</p>
+
+<pre><code>&gt;&gt;&gt; c.table_update('test', [{'name': 'col', 'maxVersions': 1}, {'name': 'col2'}])
+True
+</code></pre>
+
+<h3>
+<a id="regions" class="anchor" href="#regions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Regions</h3>
+
+<pre><code>&gt;&gt;&gt; c.table_regions('test')
+{u'Region': [{u'startKey': u'', u'endKey': u'', u'id': 1478813628562, u'name': u'test,,1478813628562.c905e2fcc2e543bc139bbd5796bf3de3.', u'location': u'ip-X-X-X-X.us-west-2.compute.internal:16020'}], u'name': u'test'}
+</code></pre>
+
+<h3>
+<a id="delete-1" class="anchor" href="#delete-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Delete</h3>
+
+<pre><code>&gt;&gt;&gt; c.table_delete('test')
+True
+</code></pre>
+
+<h2>
+<a id="put-data" class="anchor" href="#put-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Put data</h2>
+
+<p>Values is format <code>'c:f': 'val'</code> where <code>val</code> must be an instance of <code>basestring</code> to be base64 encoded.</p>
+
+<pre><code>c.put('test', [{'key': '1:1', 'values': {'yo:lll': '1111s', 'yo:2': '22222'}}, {'key': '1:2', 'values': {'yo:qqq': 'wwrt'}}])
+True
+</code></pre>
+
+<h2>
+<a id="scan" class="anchor" href="#scan" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Scan</h2>
+
+<pre><code>&gt;&gt;&gt; for k, v in c.scan('test'):
+...   print k
+...
+1:1
+1:2
+
+&gt;&gt;&gt; for k, v in c.scan('test', prefix='1:'):
+...   print k
+...
+1:1
+1:2
+
+&gt;&gt;&gt; for k, v in c.scan('test', prefix='1:', columns=['yo:2']):
+...   print k
+...
+1:1
+</code></pre>
+
+<h2>
+<a id="get-row" class="anchor" href="#get-row" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Get row</h2>
+
+<pre><code>&gt;&gt;&gt; c.get('test', '1:1')
+('1:1', {'yo:lll': '1111s', 'yo:2': '22222'})
+
+&gt;&gt;&gt; c.get('test', '1:1', cf='yo:2')
+('1:1', {'yo:2': '22222'})
+
+&gt;&gt;&gt; c.get('test', '1:2', include_timestamp=True)
+('1:2', {'yo:qqq': ('wwrt', 1478913898453)})
+</code></pre>
+
+<h2>
+<a id="get-many" class="anchor" href="#get-many" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Get many</h2>
+
+<pre><code>&gt;&gt;&gt; for k, v in c.get_many('test', ['1:1', '1:2']):
+...   print k, v
+...
+1:1 {'yo:lll': '1111s', 'yo:2': '22222'}
+1:2 {'yo:qqq': 'wwrt'}
+</code></pre>
+
+<h2>
+<a id="missing-feature" class="anchor" href="#missing-feature" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Missing feature?</h2>
+
+<p>The lib doesn't cover all endpoint options. You can always open a pr with new ones. If you have more info on the <code>/multiget</code> endpoint please open an issue. I found it in a mailing list without any spec like column filter, timestamp filter, etc. </p>
+
+<h2>
+<a id="run-tests" class="anchor" href="#run-tests" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run tests</h2>
+
+<pre><code>$ py.test tests.py
+</code></pre>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/pasdoy/hbasepy">Hbasepy</a> is maintained by <a href="https://github.com/pasdoy">pasdoy</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
