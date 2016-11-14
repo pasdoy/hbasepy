@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='hbasepy',
-      version='0.1.1',
+      version='0.1.2',
       description='Hbase REST client',
       url='https://github.com/pasdoy/hbasepy',
       author='pasdoy',
