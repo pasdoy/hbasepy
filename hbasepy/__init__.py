@@ -207,7 +207,7 @@ class Client:
 			yield self.decode_row(row, include_timestamp=include_timestamp)
 
 
-	def put(self, table, values, columns=None):
+	def put(self, table, values):
 		if len(values) == 0:
 			return
 
@@ -215,15 +215,9 @@ class Client:
 		for val in values:
 			row = {'key': base64.b64encode(val['key']), 'Cell': []}
 			for col, v in val['values'].iteritems():
-				if columns and col not in columns:
-					continue
 				row['Cell'].append({'column': base64.b64encode(col), '$': base64.b64encode(v)})
 
-			if len(row['Cell']) > 0:
-				rows.append(row)
-
-		if len(rows) == 0:
-			return
+			rows.append(row)
 
 		data = {"Row": rows}
 

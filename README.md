@@ -163,6 +163,9 @@ True
 1:2 {'yo:qqq': 'wwrt'}
 ```
 
+##Missing feature?
+The lib doesn't cover all endpoint options. You can always open a pr with new ones. If you have more info on the `/multiget` endpoint please open an issue. I found it in a mailing list without any spec like column filter, timestamp filter, etc. 
+
 ##Run tests
 ```
 $ py.test tests.py
